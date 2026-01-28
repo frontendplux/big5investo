@@ -27,8 +27,8 @@
           </div>
 
           <div class="text-center">
-            <a href="/forgot-password" class="small">Forgot password?</a> |
-            <a href="/signup" class="small">Create account</a>
+            <a href="/<?= $country ?>/forgot-password" class="small">Forgot password?</a> |
+            <a href="/<?= $country ?>/signup" class="small">Create account</a>
           </div>
         </form>
       </div>
