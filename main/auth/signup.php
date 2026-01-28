@@ -111,12 +111,13 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
     })
     .then(res => res.json())
     .then(response => {
+        hideLoading();
         if(response.status === 'success') {
             alertBox.className = 'alert alert-success';
             alertBox.textContent = response.message;
             alertBox.classList.remove('d-none');
             setTimeout(() => {
-                window.location.href = '/<?= $country ?>/<?= $country ?>/member/';
+                window.location.href = '/<?= $country ?>/member/';
             }, 1500);
         } else {
             alertBox.className = 'alert alert-danger';
@@ -130,8 +131,6 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
         alertBox.classList.remove('d-none');
         console.error(err);
     });
-
-        hideLoading();
 });
 </script>
 

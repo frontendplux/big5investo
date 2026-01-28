@@ -5,7 +5,7 @@ git commit -m "first commit"
 git branch -M main
 git remote add origin https://github.com/frontendplux/big5investo.git
 git push -u origin main
-
+os_v2_app_2ztgmnjhtrcgfb55ivmotv5qarfaaogqee7u5kehwgeaugjuxzlkv5w5dn47amsqh5zcplt43fxrdxstt6obw6cnuckt5nrew7bewdi
 
 git add .
 git commit -m "v1"
