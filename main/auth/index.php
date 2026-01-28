@@ -39,19 +39,27 @@
 </div>
 <button id="enablePush">Enable Push Notifications</button>
 
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<!-- <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script> -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js" defer></script>
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script> 
+<script> 
+window.OneSignalDeferred = window.OneSignalDeferred || []; 
+OneSignalDeferred.push(async function(OneSignal) {
+   await OneSignal.init({ appId: "d6666635-279c-4462-87bd-4558e9d7b004", }); 
+   }); 
+</script>
 <script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "d6666635-279c-4462-87bd-4558e9d7b004",
-    });
+  // window.OneSignalDeferred = window.OneSignalDeferred || [];
+  // OneSignalDeferred.push(async function(OneSignal) {
+  //   await OneSignal.init({
+  //     appId: "d6666635-279c-4462-87bd-4558e9d7b004",
+  //   });
 
-    // Optional: show the default prompt when user clicks a button
-    document.getElementById('enablePush').addEventListener('click', async () => {
-      await OneSignal.showNativePrompt();
-    });
-  });
+  //   // Optional: show the default prompt when user clicks a button
+  //   document.getElementById('enablePush').addEventListener('click', async () => {
+  //     await OneSignal.showNativePrompt();
+  //   });
+  // });
 </script>
 <!-- Bootstrap JS -->
 <script>
