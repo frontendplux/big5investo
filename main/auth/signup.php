@@ -126,6 +126,7 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
         }
     })
     .catch(err => {
+        hideLoading();
         alertBox.className = 'alert alert-danger';
         alertBox.textContent = 'Server error. Try again later.';
         alertBox.classList.remove('d-none');
