@@ -1,0 +1,12 @@
+echo "# big5investo" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/frontendplux/big5investo.git
+git push -u origin main
+
+
+git remote add .
+git branch -M main
+git push origin main
