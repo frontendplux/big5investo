@@ -8,20 +8,14 @@ if (session_status() === PHP_SESSION_NONE) {
 /**
  * Get user country from IP (cached in session)
  */
-function getUserCountryFromIP(string $default = 'NG'): string
-{
-    if (isset($_SESSION['country'])) {
-        return $_SESSION['country'];
-    }
-
-    $ip = $_SERVER['HTTP_CLIENT_IP']
+function getUserCountryFromIP(){
+        $ip = $_SERVER['HTTP_CLIENT_IP']
         ?? $_SERVER['HTTP_X_FORWARDED_FOR']
         ?? $_SERVER['REMOTE_ADDR']
         ?? '';
 
-    // Localhost → default country
     if (in_array($ip, ['127.0.0.1', '::1'])) {
-        return $_SESSION['country'] = strtoupper($default);
+        $default= strtoupper('ng');
     }
 
     $url = "http://ip-api.com/json/{$ip}?fields=status,countryCode";
@@ -30,12 +24,13 @@ function getUserCountryFromIP(string $default = 'NG'): string
     if ($response !== false) {
         $data = json_decode($response, true);
         if (!empty($data['countryCode'])) {
-            return $_SESSION['country'] = strtoupper($data['countryCode']);
+            return $default = strtoupper($data['countryCode']);
         }
     }
 
-    return $_SESSION['country'] = strtoupper($default);
+    return   strtoupper($default);
 }
+
 
 /**
  * Parse URL
@@ -53,10 +48,8 @@ if (isset($router[0]) && preg_match('/^[a-zA-Z]{2,3}$/', $router[0])) {
     $route   = $router[1] ?? 'home';
 
 } else {
-
     // Country missing → detect & redirect
     $country = getUserCountryFromIP();
-
     $path = implode('/', $router);
     $path = $path ? '/' . $path : '';
 
