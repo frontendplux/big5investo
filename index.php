@@ -19,16 +19,17 @@ function getUserCountryFromIP(string $default = 'NG'): string
         ?? $_SERVER['REMOTE_ADDR']
         ?? '';
 
-    if ($ip === '127.0.0.1' || $ip === '::1') {
+    // Localhost → default country
+    if (in_array($ip, ['127.0.0.1', '::1'])) {
         return $_SESSION['country'] = strtoupper($default);
     }
 
     $url = "http://ip-api.com/json/{$ip}?fields=status,countryCode";
     $response = @file_get_contents($url);
 
-    if ($response) {
+    if ($response !== false) {
         $data = json_decode($response, true);
-        if ($data['status'] === 'success') {
+        if (!empty($data['countryCode'])) {
             return $_SESSION['country'] = strtoupper($data['countryCode']);
         }
     }
