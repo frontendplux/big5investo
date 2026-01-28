@@ -7,6 +7,6 @@ git remote add origin https://github.com/frontendplux/big5investo.git
 git push -u origin main
 
 
-git remote add .
-git branch -M main
+git add .
+git commit -m "v1"
 git push origin main

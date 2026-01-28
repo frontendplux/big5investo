@@ -1,0 +1,8 @@
+RewriteEngine On
+
+# Do not rewrite existing files or directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redirect everything else to index.php (case-insensitive)
+RewriteRule ^(.*)$ index.php [L,NC,QSA]
