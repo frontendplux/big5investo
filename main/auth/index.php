@@ -37,31 +37,23 @@
     <div class="text-center my-3"><span>&copy;copywrite @ <a href="/">Big5 Investo</a></span></div>
   </div>
 </div>
-<button id="enablePush">Enable Push Notifications</button>
-
-<!-- <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script> -->
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js" defer></script>
-<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script> 
-<script> 
-window.OneSignalDeferred = window.OneSignalDeferred || []; 
-OneSignalDeferred.push(async function(OneSignal) {
-   await OneSignal.init({ appId: "d6666635-279c-4462-87bd-4558e9d7b004", }); 
-   }); 
-</script>
+<button id="installBtn" style="display:none">Install App</button>
 <script>
-  // window.OneSignalDeferred = window.OneSignalDeferred || [];
-  // OneSignalDeferred.push(async function(OneSignal) {
-  //   await OneSignal.init({
-  //     appId: "d6666635-279c-4462-87bd-4558e9d7b004",
-  //   });
+let deferredPrompt;
 
-  //   // Optional: show the default prompt when user clicks a button
-  //   document.getElementById('enablePush').addEventListener('click', async () => {
-  //     await OneSignal.showNativePrompt();
-  //   });
-  // });
+window.addEventListener("beforeinstallprompt", e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById("installBtn").style.display = "block";
+});
+
+document.getElementById("installBtn").addEventListener("click", () => {
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(() => {
+    deferredPrompt = null;
+  });
+});
 </script>
-<!-- Bootstrap JS -->
 <script>
 document.getElementById('loginForm').addEventListener('submit', function(e){
     e.preventDefault();

@@ -13,6 +13,10 @@
     <meta charset="UTF-8">
     <title><?= $seo_configuration_data['title'] ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0d6efd">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="description" content="<?= $seo_configuration_data['description'] ?>">
     <meta name="keywords" content="<?= $seo_configuration_data['keywords'] ?>">
     <link rel="icon" href="<?= $seo_configuration_data['icon'] ?>" type="image/x-icon">
@@ -28,6 +32,13 @@ OneSignalDeferred.push(async function(OneSignal) {
    await OneSignal.init({ appId: "d6666635-279c-4462-87bd-4558e9d7b004", }); 
    }); 
 </script>
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("/service-worker.js")
+                .then(() => console.log("Service Worker registered"))
+                .catch(err => console.error("SW error", err));
+            }
+    </script>
     <script src="/script.js"></script>
     <style>
        html, body { scroll-behavior: smooth; height: 100%; }
