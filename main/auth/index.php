@@ -78,7 +78,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e){
             alertBox.textContent = 'Login successful! Redirecting...';
             alertBox.classList.remove('d-none');
             setTimeout(() => {
-                window.location.href = '/dashboard.php'; // Change to your dashboard page
+                window.location.href = '/<?= $country ?>/member/'; // Change to your dashboard page
             }, 1500);
         } else {
             alertBox.className = 'alert alert-danger';

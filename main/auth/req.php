@@ -24,10 +24,12 @@ switch(strtolower($action)) {
 
     // ================== LOGIN ==================
     case 'login':
-        if (!$password) {
+        $user=$input['user'] ?? '';
+        $pass=$input['pass'] ?? '';
+        if (empty($user) || empty($pass)) {
             echo json_encode([
                 'status' => 'error',
-                'message' => 'Password required'
+                'message' => 'Enter a valid email/phone and password'
             ]);
             exit;
         }
@@ -37,17 +39,26 @@ switch(strtolower($action)) {
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if ($user = $result->fetch_assoc()) {
-            if (password_verify($password, $user['password_hash'])) {
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['user_name'] = $user['user'];
-
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            if (password_verify($password, $row['password_hash'])) {
+                $uids = uniqid('UID_');
+                $smt=$conn->prepare("UPDATE users SET uids=?, updated_at = NOW() WHERE id = ? limit 1");
+                $smt->bind_param("si", $uids, $row['id']);
+                $smt->execute();
+                $_SESSION['id'] = $row['id'];
+                $_SESSION['uid'] = $uids;
                 echo json_encode([
                     'status' => 'success',
                     'message' => 'Login successful'
                 ]);
                 exit;
             }
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Invalid email/phone or password'
+            ]);
+            return;
         }
 
         echo json_encode([
@@ -58,20 +69,40 @@ switch(strtolower($action)) {
 
     // ================== SIGNUP ==================
     case 'signup':
-        if (!$password) {
+        $password = $input['pass'] ?? '';
+        $userName=$input['user_name'] ?? '';
+        $phone=$input['phone'] ?? '';
+        $email=$input['email'] ?? '';
+        if (empty($password) || empty($userName) || empty($email) || empty($phone)) {
             echo json_encode([
                 'status' => 'error',
-                'message' => 'Password required'
+                'message' => 'All fields are required'
             ]);
             exit;
         }
 
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Invalid email address'
+            ]);
+            exit;
+        }
+
+        if (!preg_match('/^\+?[1-9][0-9]{7,14}$/', $phone)) {
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Invalid phone number'
+            ]);
+            exit;
+        }
+
+
         // Check if user already exists
-        $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? OR phone = ? LIMIT 1");
-        $stmt->bind_param("ss", $userInput, $userInput);
+        $stmt = $conn->prepare("SELECT id FROM users WHERE email =? LIMIT 1");
+        $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
-
         if ($result->num_rows > 0) {
             echo json_encode([
                 'status' => 'error',
@@ -84,12 +115,11 @@ switch(strtolower($action)) {
         $password_hash = password_hash($password, PASSWORD_BCRYPT);
         $stmt = $conn->prepare("INSERT INTO users (uids, user, email, phone, password_hash) VALUES (?, ?, ?, ?, ?)");
         $uids = uniqid('UID_'); // Unique ID
-        $userName = $input['user_name'] ?? $userInput; // optional user name
-        $email = $input['email'] ?? $userInput;
-        $phone = $input['phone'] ?? $userInput;
-
+        
         $stmt->bind_param("sssss", $uids, $userName, $email, $phone, $password_hash);
         if ($stmt->execute()) {
+            $_SESSION['uid'] = $uids;
+            $_SESSION['id'] = $conn->insert_id;
             echo json_encode([
                 'status' => 'success',
                 'message' => 'Signup successful'

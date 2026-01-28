@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Big5 Investo - Signup</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+<?php include __DIR__.'/../compo/head.php'; ?>
 <body class="bg-light">
 
 <div class="container vh-100 d-flex justify-content-center align-items-center">
@@ -13,7 +6,7 @@
     <div class="card shadow">
       <div class="card-body p-4">
 
-        <h3 class="card-title text-center mb-4">Create a Big5 Investo Account</h3>
+        <h3 class="card-title text-center mb-4"><span class="fw-light fs-5">welcome to </span> <br /> <span class="fw-bold text-uppercase fs-4">Big5 Investo</span></h3>
 
         <!-- Alert -->
         <div id="alert" class="alert d-none" role="alert"></div>
@@ -50,7 +43,7 @@
           </div>
 
           <div class="text-center">
-            <a href="login.html" class="small">Already have an account? Login</a>
+            <a href="/<?= $country ?>/login" class="small">Already have an account? Login</a>
           </div>
         </form>
 
@@ -64,7 +57,7 @@
 <script>
 document.getElementById('signupForm').addEventListener('submit', function(e) {
     e.preventDefault();
-
+   showLoading();
     const alertBox = document.getElementById('alert');
     const username = document.getElementById('username').value.trim();
     const email = document.getElementById('email').value.trim();
@@ -77,6 +70,7 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
         alertBox.className = 'alert alert-danger';
         alertBox.textContent = 'All fields are required.';
         alertBox.classList.remove('d-none');
+        hideLoading();
         return;
     }
 
@@ -86,6 +80,7 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
         alertBox.className = 'alert alert-danger';
         alertBox.textContent = 'Invalid email address.';
         alertBox.classList.remove('d-none');
+        hideLoading();
         return;
     }
 
@@ -94,6 +89,7 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
         alertBox.className = 'alert alert-danger';
         alertBox.textContent = 'Passwords do not match.';
         alertBox.classList.remove('d-none');
+        hideLoading();
         return;
     }
 
@@ -120,7 +116,7 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
             alertBox.textContent = response.message;
             alertBox.classList.remove('d-none');
             setTimeout(() => {
-                window.location.href = 'login.html';
+                window.location.href = '/<?= $country ?>/<?= $country ?>/member/';
             }, 1500);
         } else {
             alertBox.className = 'alert alert-danger';
@@ -135,6 +131,7 @@ document.getElementById('signupForm').addEventListener('submit', function(e) {
         console.error(err);
     });
 
+        hideLoading();
 });
 </script>
 

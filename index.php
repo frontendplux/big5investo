@@ -85,8 +85,8 @@ switch ($route) {
         include __DIR__ . '/main/auth/confirm-passcode.php';
         break;
 
-    case 'uk':
-        include __DIR__ . '/uk.php';
+    case 'member':
+        include __DIR__ . '/member/landing/index.php';
         break;
 
     default:
