@@ -17,7 +17,7 @@ if (in_array($host, ['localhost:3000', '127.0.0.1:3000', '192.168.8.129:3000', '
 } 
 // Production settings
 else {
-    $db_host = 'localhost';
+    $db_host = 'sql300.infinityfree.com';
     $db_user = 'if0_41012169';
     $db_pass = 'ToffSgotZpULRRU';
     $db_name = 'if0_41012169_big5';
